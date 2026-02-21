@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./Image/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
+    <title>To-Do List App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+    <div class="container">
+            <!--Heading of To-Do List  -->
+            <div class="Heading">
+                <h1>To-Do List App</h1><br>
+            </div>
+    
+            <!-- Input field to Add tasks -->
+            <div class="Input-Field">
+                <input type="text" name="Add-Items" placeholder="Add a new task..." required id="Add">
+                <button id="Add-Task" onclick="createTaskElement()">Add</button>
+            </div>
+    
+            <!-- Content which user will Add -->
+            <div class="content">
+                <div id="Add-Content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Links -->
+    <script src="./app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
+</html>
