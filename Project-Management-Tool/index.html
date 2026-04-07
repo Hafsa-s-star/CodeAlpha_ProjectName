@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus | Project Management</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Boxicons for elegant icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- App Container -->
+    <div id="app" class="app-container">
+        
+        <!-- ================= AUTH VIEW ================= -->
+        <section id="auth-view" class="view auth-view active">
+            <div class="glass-panel auth-panel">
+                <div class="auth-header">
+                    <div class="logo">
+                        <i class='bx bx-hive'></i>
+                        <span>Nexus</span>
+                    </div>
+                    <h2 id="auth-title">Welcome Back</h2>
+                    <p id="auth-subtitle">Enter your details to manage your projects.</p>
+                </div>
+
+                <form id="auth-form" class="auth-form">
+                    <div class="input-group">
+                        <i class='bx bx-user'></i>
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class='bx bx-lock-alt'></i>
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-primary" id="auth-submit-btn">Login</button>
+                    <div class="auth-toggle">
+                        <span id="auth-toggle-text">Don't have an account? <a href="#" id="toggle-auth-link">Sign up</a></span>
+                    </div>
+                </form>
+            </div>
+            <!-- Decorative Background Elements -->
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+        </section>
+
+        <!-- ================= MAIN LAYOUT ================= -->
+        <section id="main-view" class="view main-view hidden">
+            <!-- Sidebar -->
+            <aside class="sidebar glass-panel">
+                <div class="logo">
+                    <i class='bx bx-hive'></i>
+                    <span>Nexus</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-item active" id="nav-dashboard">
+                        <i class='bx bx-grid-alt'></i>
+                        <span>Dashboard</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="user-profile">
+                        <div class="avatar"><i class='bx bx-user'></i></div>
+                        <span id="current-username">User</span>
+                    </div>
+                    <button id="logout-btn" class="btn-icon"><i class='bx bx-log-out'></i></button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content-area">
+                
+                <!-- TOP HEADER -->
+                <header class="top-header glass-panel">
+                    <h1 id="page-title">Dashboard</h1>
+                    <div class="header-actions" id="header-actions">
+                        <button class="btn-primary" id="btn-create-project"><i class='bx bx-plus'></i> New Project</button>
+                    </div>
+                </header>
+
+                <div class="scroll-container">
+                    <!-- Dashboard Sub-view -->
+                    <div id="dashboard-content" class="sub-view active">
+                        <div id="projects-grid" class="projects-grid">
+                            <!-- Projects will be injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Project Board Sub-view -->
+                    <div id="project-board-content" class="sub-view hidden">
+                        <div class="board-header">
+                            <p id="project-desc" class="text-muted">Loading...</p>
+                            <button class="btn-secondary" id="btn-create-task"><i class='bx bx-plus'></i> Add Task</button>
+                        </div>
+                        <div class="kanban-board">
+                            <!-- Todo Column -->
+                            <div class="kanban-column" data-status="todo">
+                                <div class="column-header">
+                                    <h3>To Do</h3>
+                                    <span class="count" id="count-todo">0</span>
+                                </div>
+                                <div class="task-list" id="list-todo"></div>
+                            </div>
+                            <!-- In Progress Column -->
+                            <div class="kanban-column" data-status="in-progress">
+                                <div class="column-header">
+                                    <h3>In Progress</h3>
+                                    <span class="count" id="count-inprogress">0</span>
+                                </div>
+                                <div class="task-list" id="list-inprogress"></div>
+                            </div>
+                            <!-- Done Column -->
+                            <div class="kanban-column" data-status="done">
+                                <div class="column-header">
+                                    <h3>Done</h3>
+                                    <span class="count" id="count-done">0</span>
+                                </div>
+                                <div class="task-list" id="list-done"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </section>
+
+    </div>
+
+    <!-- ================= MODALS ================= -->
+    
+    <!-- Unified Modal Overlay -->
+    <div class="modal-overlay hidden" id="modal-overlay"></div>
+
+    <!-- Project Create Modal -->
+    <div class="modal glass-panel hidden" id="modal-project">
+        <div class="modal-header">
+            <h2>Create New Project</h2>
+            <button class="btn-close" id="close-project-modal"><i class='bx bx-x'></i></button>
+        </div>
+        <form id="form-project" class="modal-form">
+            <div class="input-group">
+                <input type="text" id="proj-title" placeholder="Project Title" required>
+            </div>
+            <div class="input-group">
+                <textarea id="proj-desc" placeholder="Project Description" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full">Create Project</button>
+        </form>
+    </div>
+
+    <!-- Task Create Modal -->
+    <div class="modal glass-panel hidden" id="modal-task">
+        <div class="modal-header">
+            <h2>Add New Task</h2>
+            <button class="btn-close" id="close-task-modal"><i class='bx bx-x'></i></button>
+        </div>
+        <form id="form-task" class="modal-form">
+            <div class="input-group">
+                <input type="text" id="task-title" placeholder="Task Title" required>
+            </div>
+            <div class="input-group">
+                <textarea id="task-desc" placeholder="Task Description" rows="3"></textarea>
+            </div>
+            <div class="input-group">
+                <select id="task-assignee">
+                    <option value="">Unassigned</option>
+                    <!-- Users injected here -->
+                </select>
+            </div>
+            <button type="submit" class="btn-primary w-full">Save Task</button>
+        </form>
+    </div>
+
+    <!-- Task Details / Comments Modal -->
+    <div class="modal glass-panel task-details-modal hidden" id="modal-task-details">
+        <div class="modal-header">
+            <h2 id="detail-task-title">Task Title</h2>
+            <button class="btn-close" id="close-details-modal"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="task-meta">
+                <span class="badge" id="detail-task-status">status</span>
+                <span class="assignee"><i class='bx bx-user'></i> <span id="detail-task-assignee">User</span></span>
+            </div>
+            <p id="detail-task-desc" class="task-description">Description goes here</p>
+
+            <div class="comments-section">
+                <h3>Comments</h3>
+                <div class="comments-list" id="comments-list">
+                    <!-- Comments injected here -->
+                </div>
+                <form id="form-comment" class="comment-form">
+                    <input type="text" id="comment-input" placeholder="Write a comment..." required>
+                    <button type="submit" class="btn-send"><i class='bx bxs-send'></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
